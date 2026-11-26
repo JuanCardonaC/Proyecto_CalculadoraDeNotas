@@ -5,8 +5,8 @@ Calculadora visual que mide cuánto hay que sacar para poder pasar o habilitar u
 ## Funcionalidades
 
 - **Plantillas precargadas y modo personalizado:**
-  - **Materia 1 (25% / 40% / 35%):** Examen final, talleres y proyecto final.
-  - **Matemáticas Discretas (4 × 25% + bonos):** Cuatro exámenes con bonificaciones independientes.
+  - **Programación (25% / 40% / 35%):** Examen final, talleres y proyecto final.
+  - **Matemáticas  (4 × 25% + bonos):** Cuatro exámenes con bonificaciones independientes.
   - **Personalizada:** Agrega o elimina evaluaciones, cambia sus porcentajes, escala máxima y meta.
 - **Modificación de variables en tiempo real:**
   - Ajusta nota base, porcentaje y bonificación (`+`) con deslizadores o campos numéricos.
