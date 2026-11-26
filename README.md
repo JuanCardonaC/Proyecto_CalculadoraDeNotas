@@ -23,13 +23,14 @@ Calculadora visual que mide cuánto hay que sacar para poder pasar o habilitar u
 ## Estructura del proyecto
 
 ```text
-calculadora-notas/
-├── index.html      # Estructura de la interfaz y enlaces de scripts
-├── styles.css      # Estilos del tablero y diseño responsivo
-├── calculator.js   # Motor de cálculo puro (ponderaciones, metas y curvas)
-├── charts.js       # Renderizado de gráficas en Canvas HiDPI y tooltips
-├── app.js          # Estado de la aplicación, plantillas y eventos DOM
-└── README.md       # Documentación del proyecto
+Proyecto_CalculadoraDeNotas/
+├── index.html          # Página principal (ábrela directamente en tu navegador)
+├── README.md           # Documentación del proyecto
+└── src/
+    ├── styles.css      # Estilos del tablero y diseño responsivo
+    ├── calculator.js   # Motor de cálculo puro (ponderaciones, metas y curvas)
+    ├── charts.js       # Renderizado de gráficas en Canvas HiDPI y tooltips
+    └── app.js          # Estado de la aplicación, plantillas y eventos DOM
 ```
 
 ## Cómo ejecutar
