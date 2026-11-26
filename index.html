@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador Visual de Notas</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div>
+                <h1>Simulador Visual de Notas</h1>
+                <p>Modifica notas, porcentajes, bonificaciones y metas para ver en tiempo real cuánto necesitas para pasar.</p>
+            </div>
+            <div class="preset-bar" aria-label="Plantillas de materias">
+                <button type="button" class="btn" data-preset="materia1">Materia 1 (25/40/35)</button>
+                <button type="button" class="btn active" data-preset="discretas">Matemáticas Discretas</button>
+                <button type="button" class="btn" data-preset="libre">Personalizada</button>
+            </div>
+        </header>
+
+        <!-- Tarjetas de resumen -->
+        <section class="summary-grid">
+            <article class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">Nota necesaria (Objetivo)</span>
+                    <span id="cardStatusBadge" class="status-badge badge-primary">Alcanzable</span>
+                </div>
+                <div id="cardRequiredValue" class="kpi-value">0.00</div>
+                <div id="cardRequiredSub" class="kpi-sub">Calculando...</div>
+            </article>
+
+            <article class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">Puntos acumulados</span>
+                </div>
+                <div id="cardAccumulatedValue" class="kpi-value">0.00 pts</div>
+                <div id="cardAccumulatedSub" class="kpi-sub">Sin contar la evaluación objetivo.</div>
+            </article>
+
+            <article class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">Definitiva simulada</span>
+                </div>
+                <div id="cardProjectedValue" class="kpi-value">0.00</div>
+                <div id="cardProjectedSub" class="kpi-sub">Según la nota simulada en el objetivo.</div>
+            </article>
+
+            <article class="kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">Rango definitivo</span>
+                </div>
+                <div id="cardRangeValue" class="kpi-value">0.00 – 0.00</div>
+                <div id="cardRangeSub" class="kpi-sub">Mínimo y máximo posible.</div>
+            </article>
+        </section>
+
+        <!-- Barra visual hacia la meta -->
+        <section class="progress-card">
+            <div class="progress-head">
+                <span>Progreso hacia la nota definitiva simulada</span>
+                <span>Marcadores: Habilitar (2.0) y Meta elegida</span>
+            </div>
+            <div class="progress-track">
+                <div id="progressFill" class="progress-fill fill-success" style="width: 0%"></div>
+                <div id="progressMarker2" class="progress-marker" style="left: 40%">
+                    <span>2.0</span>
+                </div>
+                <div id="progressMarkerGoal" class="progress-marker" style="left: 60%">
+                    <span id="progressLabelGoal">Meta 3.0</span>
+                </div>
+            </div>
+        </section>
+
+        <main class="main-grid">
+            <!-- Panel izquierdo: variables y evaluaciones -->
+            <section class="panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Variables y Evaluaciones</h2>
+                    <span id="totalWeightBadge" class="weight-badge">Total: 100%</span>
+                </div>
+
+                <div class="global-box">
+                    <div class="goal-row">
+                        <label for="goalInput">Nota meta:</label>
+                        <div class="quick-goals">
+                            <button type="button" class="btn btn-sm active" data-goal="3.0">3.0 (Pasar)</button>
+                            <button type="button" class="btn btn-sm" data-goal="2.0">2.0 (Habilitar)</button>
+                        </div>
+                    </div>
+                    <div class="slider-controls">
+                        <input id="goalRange" type="range" min="0" max="5" step="0.05" value="3.0" />
+                        <input id="goalInput" type="number" min="0" max="5" step="0.05" value="3.0" />
+                    </div>
+                    <div class="settings-inline">
+                        <label>
+                            Nota máx:
+                            <input id="maxScaleInput" type="number" min="1" max="100" step="0.5" value="5" />
+                        </label>
+                        <label>
+                            <input id="capBonusCheck" type="checkbox" checked />
+                            Limitar nota + bono al máximo
+                        </label>
+                    </div>
+                </div>
+
+                <div id="weightWarning" class="warning-box"></div>
+
+                <div id="itemsContainer" class="items-list"></div>
+
+                <div style="margin-top: 12px;">
+                    <button id="addItemBtn" type="button" class="btn btn-accent" style="width: 100%;">
+                        + Agregar evaluación
+                    </button>
+                </div>
+            </section>
+
+            <!-- Panel derecho: gráficas -->
+            <section class="charts-stack">
+                <article class="panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Gráfica 1: ¿Cuánto necesito en el Objetivo según la Variable (Eje X)?</h2>
+                    </div>
+                    <p class="panel-sub">
+                        Mueve el mouse sobre la gráfica para ver combinaciones exactas. La zona verde es alcanzable (≤ nota máx) y la roja supera el máximo posible.
+                    </p>
+                    <div class="chart-wrap tall">
+                        <canvas id="chartSensitivity"></canvas>
+                        <div id="tooltipSensitivity" class="chart-tooltip"></div>
+                    </div>
+                </article>
+
+                <div class="charts-row">
+                    <article class="panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Gráfica 2: Definitiva según nota del Objetivo</h2>
+                        </div>
+                        <p class="panel-sub">
+                            Cómo cambia tu nota definitiva final si sacas entre 0.0 y el máximo en la evaluación objetivo.
+                        </p>
+                        <div class="chart-wrap">
+                            <canvas id="chartFinal"></canvas>
+                            <div id="tooltipFinal" class="chart-tooltip"></div>
+                        </div>
+                    </article>
+
+                    <article class="panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Gráfica 3: Aporte ponderado por evaluación</h2>
+                        </div>
+                        <p class="panel-sub">
+                            Puntos reales que aporta cada nota (incluyendo bonos) frente al máximo posible de su porcentaje.
+                        </p>
+                        <div class="chart-wrap">
+                            <canvas id="chartBreakdown"></canvas>
+                            <div id="tooltipBreakdown" class="chart-tooltip"></div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="calculator.js"></script>
+    <script src="charts.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
