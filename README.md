@@ -1,6 +1,6 @@
-# Simulador Visual de Notas
+# Proyecto_CalculadoraDeNotas
 
-Aplicación web interactiva escrita en **HTML5, CSS3 y JavaScript** (sin dependencias externas) para calcular en tiempo real cuánta nota necesitas en tus evaluaciones pendientes para alcanzar una meta académica (por ejemplo, `3.0` para aprobar o `2.0` para habilitar).
+Calculadora visual que mide cuánto hay que sacar para poder pasar o habilitar una materia, desarrollada en **HTML5, CSS3 y JavaScript** (sin dependencias externas).
 
 ## Funcionalidades
 
